@@ -40,4 +40,20 @@ public class Dish {
     }
 
     public enum Type {MEAT, FISH, OTHER}
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Dish dish = (Dish) o;
+
+        return !(name != null ? !name.equals(dish.name) : dish.name != null);
+
+    }
+
+    @Override
+    public int hashCode() {
+        return name != null ? name.hashCode() : 0;
+    }
 }
