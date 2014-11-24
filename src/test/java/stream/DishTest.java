@@ -4,9 +4,7 @@ import main.java.dishes.Dish;
 import org.junit.Before;
 import org.junit.Test;
 
-import java.util.Arrays;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -179,4 +177,88 @@ public class DishTest {
         assertThat(sum.get(), equalTo(120));
     }
 
+    @Test
+    public void shouldCountMenu() {
+        long count = menu.stream().collect(Collectors.counting());
+        assertThat(count, equalTo(9L));
+    }
+
+    @Test
+    public void shouldFindMaxCaloriesDish() {
+        Comparator<Dish> maxComparator = Comparator.comparingInt(Dish::getCalories);
+        Optional<Dish> sum = menu.stream().collect(Collectors.maxBy(maxComparator));
+        assertThat(sum.get().getCalories(), equalTo(800));
+    }
+
+    @Test
+    public void shouldSumAllCalories() {
+        int sum = menu.stream().collect(Collectors.summingInt(Dish::getCalories));
+        assertThat(sum, equalTo(4200));
+    }
+
+    @Test
+    public void shouldSumAverageCalories() {
+        double average = menu.stream().collect(Collectors.averagingInt(Dish::getCalories));
+        assertThat(average, equalTo(4200D / 9));
+    }
+
+    @Test
+    public void shouldJoinNames() {
+        String names = menu.stream().map(Dish::getName).collect(Collectors.joining(","));
+        assertThat(names, equalTo("doner,season fruit,beef,chicken,french fries,rice,pizza,prawns,salmon"));
+    }
+
+    @Test
+    public void shouldGroupBy() {
+        System.out.println(menu.stream().collect(Collectors.groupingBy(Dish::getType)));
+
+        System.out.println(menu.stream().collect(Collectors.groupingBy(d -> {
+            if (d.getCalories() <= 400) {
+                return "DIET";
+            } else if (d.getCalories() <= 400) {
+                return "NORMAL";
+            }
+            return "FAT";
+        })));
+
+        System.out.println(menu.stream().collect(Collectors.groupingBy(Dish::getType, Collectors.groupingBy(d -> {
+            if (d.getCalories() <= 400) {
+                return "DIET";
+            } else if (d.getCalories() <= 400) {
+                return "NORMAL";
+            }
+            return "FAT";
+        }))));
+
+        Map<Dish.Type, Long> typesCount = menu.stream().collect(
+                Collectors.groupingBy(Dish::getType, Collectors.counting()));
+        System.out.println(typesCount);
+
+        Map<Dish.Type, Optional<Dish>> mostCaloricByType =
+                menu.stream()
+                        .collect(Collectors.groupingBy(Dish::getType,
+                                Collectors.maxBy(Comparator.comparingInt(Dish::getCalories))));
+        System.out.println(mostCaloricByType);
+
+        Map<Dish.Type, Dish> mostCaloricByTypeWithoutOptional =
+                menu.stream()
+                        .collect(Collectors.groupingBy(Dish::getType,
+                                Collectors.collectingAndThen(
+                                        Collectors.maxBy(Comparator.comparingInt(Dish::getCalories)),
+                                        Optional::get)));
+        System.out.println(mostCaloricByTypeWithoutOptional);
+    }
+
+    @Test
+    public void shouldPartioningBy() {
+        System.out.println(menu.stream().collect(Collectors.partitioningBy(Dish::isVegetarian)));
+
+        System.out.println(menu.stream().collect(Collectors.partitioningBy(Dish::isVegetarian,
+                Collectors.groupingBy(Dish::getType))));
+
+        System.out.println(menu.stream().collect(Collectors.partitioningBy(Dish::isVegetarian,
+                Collectors.collectingAndThen(Collectors.maxBy(Comparator.comparingInt(Dish::getCalories)),
+                        Optional::get))));
+
+    }
 }

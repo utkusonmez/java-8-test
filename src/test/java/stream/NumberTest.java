@@ -5,6 +5,7 @@ import org.junit.Test;
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.contains;
@@ -72,6 +73,16 @@ public class NumberTest {
                 .collect(Collectors.toList());
 
         assertThat(collectedNumbers, contains(10, 7));
+    }
+
+    @Test
+    public void shouldFindPrimes() {
+        System.out.println(IntStream.rangeClosed(2, 11).boxed().collect(Collectors.partitioningBy(this::isPrime)));
+    }
+
+    private boolean isPrime(int candidate) {
+        int candidateRoot = (int) Math.sqrt((double) candidate);
+        return IntStream.rangeClosed(2, candidateRoot).noneMatch(i -> candidate % i == 0);
     }
 
 }
