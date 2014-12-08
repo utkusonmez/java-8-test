@@ -27,7 +27,8 @@ public class AppleLister {
     public List<Apple> filterApples(List<Apple> appleList, Predicate<Apple> p) {
         List<Apple> newApples = new ArrayList<>();
         for (Apple each : appleList) {
-            if(p.test(each)){
+            if (p.test(each)) {
+                System.out.println(p.toString());
                 newApples.add(each);
             }
         }

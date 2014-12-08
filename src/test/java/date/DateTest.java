@@ -120,6 +120,16 @@ public class DateTest {
     }
 
     @Test
+    public void formatInstant(){
+        System.out.println("format instant");
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+        Instant now = Instant.now();
+        LocalDateTime localDateTime = LocalDateTime.ofInstant(now, ZoneId.of("UTC+2"));
+
+        System.out.println(formatter.format(localDateTime));
+    }
+
+    @Test
     public void turkishFormatter(){
         System.out.println("turkishFormatter");
 

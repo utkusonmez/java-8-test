@@ -13,7 +13,7 @@ public class FunctionTest {
 
     @Test
     public void shouldMapStringLengths() {
-        List<Integer> lengthList = map(Arrays.asList("Java", "Rocks"), String::length);
+        List<Integer> lengthList = map(Arrays.asList("Java", "Rocks"), (s) -> s.length());
 
         assertTrue(lengthList.get(0) == 4);
         assertTrue(lengthList.get(1) == 5);
@@ -21,7 +21,9 @@ public class FunctionTest {
 
     private <T, R> List<R> map(List<T> list, Function<T, R> f) {
         List<R> resultList = new ArrayList<>();
-        list.forEach((t) -> resultList.add(f.apply(t)));
+        for (T t : list) {
+            resultList.add(f.apply(t));
+        }
         return resultList;
     }
 

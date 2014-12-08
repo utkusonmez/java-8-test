@@ -15,7 +15,9 @@ public class MethodReferencingTest {
 
     @Test
     public void shouldUseForStaticMethod(){
-        Function<String, Integer> stringToInteger = Integer::parseInt;
+        Function<String, Integer> stringToInteger = (t) -> {
+            return Integer.parseInt(t);
+        };
 
         assertTrue(stringToInteger.apply("3") == 3);
     }

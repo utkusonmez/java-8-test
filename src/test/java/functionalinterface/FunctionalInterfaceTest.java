@@ -18,9 +18,14 @@ public class FunctionalInterfaceTest {
     @Test
     public void shouldTestTwiceLambda() {
         process((String s) -> {
-            System.out.println(s);
-            System.out.println(s);
+            System.out.println("First " + s);
+            System.out.println("Second " + s);
         });
+    }
+
+    @Test
+    public void shouldTestPrefixSuffixLambda() {
+        process((String s) -> System.out.println("-*-" + s + "-*-"));
     }
 
     @Test
@@ -30,10 +35,14 @@ public class FunctionalInterfaceTest {
         //process((String s) -> {return 1;});
     }
 
-    public void process(WriterProcessor wp) {
-        System.out.println("PROCESS starting");
-        list.forEach(wp::process);
-        System.out.println("PROCESS ending");
+    private void process(WriterProcessor wp) {
+        wp.process("UTKU");
     }
+
+//    public void process(WriterProcessor wp) {
+//        System.out.println("PROCESS starting");
+//        list.forEach(wp::process);
+//        System.out.println("PROCESS ending");
+//    }
 
 }
